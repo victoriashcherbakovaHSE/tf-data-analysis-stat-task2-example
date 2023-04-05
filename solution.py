@@ -8,9 +8,8 @@ chat_id = 871302863
 
 def solution(p: float, x: np.array) -> tuple:
     n = len(x)
-    mean = np.mean(x)
-    variance = np.var(x, ddof=1)
-    statistic = (n-1)*variance/(3*mean**2)
-    left = chi2.ppf(p/2, n-1)/(3*statistic)
-    right = chi2.ppf(1-p/2, n-1)/(3*statistic)
-    return (left, right)
+    s = np.sum(x**2)
+    alpha = 1 - p
+    left = np.sqrt(s / chi2.ppf(1 - alpha/2, 2*n))
+    right = np.sqrt(s / chi2.ppf(alpha/2, 2*n))
+    return (left / np.sqrt(3), right / np.sqrt(3))
